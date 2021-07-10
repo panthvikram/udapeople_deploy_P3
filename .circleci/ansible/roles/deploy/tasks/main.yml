@@ -19,7 +19,7 @@
 
 - name: Executing node
   shell: |
-    cd ~/web
+    cd ~/web/backend
     sudo npm install
     sudo npm run build
     sudo pm2 start npm --name backend-app -- start
