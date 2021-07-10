@@ -330,9 +330,9 @@ jobs:
           command: |
             if curl -s http://${BACKEND_IP}:3030/api/status
               then
-                return 0
-              else
                 return 1
+              else
+                return 0
             fi
       - run:
           name: Frontend smoke test.
@@ -341,9 +341,9 @@ jobs:
             echo $URL          
             if curl -s ${URL} | grep "Welcome"
               then
-                return 0
-              else
                 return 1
+              else
+                return 0
             fi            
       - revert-migrations
       - aws-cli-setup-python
