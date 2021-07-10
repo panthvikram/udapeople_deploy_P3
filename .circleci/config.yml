@@ -96,8 +96,6 @@ jobs:
           command: |
             cd backend
             sudo npm install
-            sudo npm fund
-            sudo npm audit fix
             sudo npm run build
       - save_cache:
           paths: [backend/node_modules]
@@ -144,6 +142,7 @@ jobs:
           name: "Scan Frontend"
           command: |
             cd frontend
+            npm install webpack-dev-server -g
             npm install
             npm audit fix --audit-level=critical --force
 
