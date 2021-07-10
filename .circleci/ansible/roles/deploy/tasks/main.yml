@@ -1,0 +1,25 @@
+---
+- name: Creates directory
+  file:
+    path: ~/web
+    state: directory
+
+- name: Copy backend tar files
+  become: true
+  copy:
+    src: /home/backend.tar.gz
+    dest: /home/ubuntu/backend.tar.gz
+
+- name: Unpack and move
+  shell: |
+    cd /home/ubuntu
+    ls -la
+    tar xzvf backend.tar.gz
+    mv root/project/backend/ ~/web/
+
+- name: Executing node
+  shell: |
+    cd ~/web
+    sudo npm install
+    sudo npm run build
+    sudo pm2 start npm --name backend-app -- start
