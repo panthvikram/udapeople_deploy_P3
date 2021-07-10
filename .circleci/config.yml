@@ -399,20 +399,17 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Get old stack workflow id
+          name: Get old pipeline and Remove old stacks and files
           command: |
             export OldWorkflowID=$(curl -H "token: << pipeline.parameters.memstash-token >>" --request GET https://api.memstash.io/values/last_pipeline_${CIRCLE_WORKFLOW_ID} )
             echo ${OldWorkflowID}
-      - run:
-          name: Remove old stacks and files
-          command: |
             if [ -z "${OldWorkflowID}" ]
               then
+                echo "No old Id and empty"
+              else
                 aws s3 rm --recursive s3://udapeople-${OldWorkflowID}
                 aws cloudformation delete-stack --stack-name frontend-${OldWorkflowID}
                 aws cloudformation delete-stack --stack-name backend-${OldWorkflowID}
-              else
-                echo "No old Id and empty"
             fi
 #           aws s3 rb s3://udapeople-vp-${OldWorkflowID} --force
 
