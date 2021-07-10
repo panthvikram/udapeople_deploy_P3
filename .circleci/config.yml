@@ -57,9 +57,11 @@ commands:
             if(( $SUCCESS==1 )); 
             then
               echo "inside if"
-              cd ~/project/backend
+              cd ~/project
+              echo TYPEORM_USERNAME=$TYPEORM_USERNAME >> "backend/.env"
+              echo TYPEORM_PASSWORD=$TYPEORM_PASSWORD >> "backend/.env"
+              cd backend
               npm install
-              npm audit fix
               npm run build
               npm run migrations:revert > migration_revert.log
             fi
@@ -375,8 +377,10 @@ jobs:
             then
               echo "No old implementation"
             else
+              echo "else"
               curl -H "Content-Type: text/plain" -H "token: << pipeline.parameters.memstash-token >>" --request PUT --data ${OldWorkflowID} https://api.memstash.io/values/last_pipeline_${CIRCLE_WORKFLOW_ID}
             fi
+            echo ${OldWorkflowID}
       - run:
           name: Update cloudfront distribution
           command: |
@@ -419,6 +423,8 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "8f:30:cf:c2:0d:5c:9d:a4:f7:70:7a:fa:dc:98:e6:cd"
+      - attach_workspace:
+          at: ~/
       - run:
           name: Update dependencies
           command: |
@@ -427,16 +433,11 @@ jobs:
           name: Configure server
           command: |
             ansible-playbook .circleci/ansible/prometheus.yml \
-              -i .circleci/ansible/prom-inventory.txt
-
+              -i .circleci/ansible/inventory.txt
 
 workflows:
   default:
     jobs:
-      - build-prometheus:
-          filters:
-            branches:
-              only: [prom]      
       - build-frontend
       - build-backend
       - test-frontend:
@@ -466,3 +467,5 @@ workflows:
           requires: [smoke-test]
       - cleanup:
           requires: [cloudfront-update]
+      - build-prometheus:
+          requires: [cleanup]

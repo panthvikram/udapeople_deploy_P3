@@ -1,6 +1,6 @@
 ---
-- name: "prometheus setup." 
-  hosts: prom
+- name: "prometheus node exporter setup." 
+  hosts: web
   user: ubuntu
   gather_facts: false
   vars:
