@@ -83,7 +83,7 @@ jobs:
             sudo npm run build
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build
+          key: frontend-build2
 
   build-backend:
     docker:
@@ -100,7 +100,7 @@ jobs:
             sudo npm run build
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build
+          key: backend-build2
 
   test-frontend:
     docker:
