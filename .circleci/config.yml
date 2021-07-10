@@ -73,11 +73,12 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build]
+          keys: [frontend-build2]
       - run:
           name: Build front-end
           command: |
             cd frontend
+            sudo npm install webpack-dev-server -g
             sudo npm install
             sudo npm run build
       - save_cache:
@@ -90,7 +91,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build2]
       - run:
           name: Back-end build
           command: |
@@ -123,7 +124,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build2]
       - run:
           name: "Test Backend"
           command: |
@@ -142,7 +143,6 @@ jobs:
           name: "Scan Frontend"
           command: |
             cd frontend
-            npm install webpack-dev-server -g
             npm install
             npm audit fix --audit-level=critical --force
 
@@ -152,7 +152,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build]
+          keys: [backend-build2]
       - run:
           name: "Scan Backend"
           command: |
