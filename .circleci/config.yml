@@ -79,6 +79,7 @@ jobs:
           command: |
             cd frontend
             sudo npm install
+            npm audit fix --force
             sudo npm run build
       - save_cache:
           paths: [frontend/node_modules]
