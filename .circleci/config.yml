@@ -80,7 +80,7 @@ jobs:
             cd frontend
             sudo npm install
             sudo npm fund
-            sudo npm audit fix --force
+            sudo npm audit fix
             sudo npm run build
       - save_cache:
           paths: [frontend/node_modules]
@@ -99,7 +99,7 @@ jobs:
             cd backend
             sudo npm install
             sudo npm fund
-            sudo npm audit fix --force
+            sudo npm audit fix
             sudo npm run build
       - save_cache:
           paths: [backend/node_modules]
