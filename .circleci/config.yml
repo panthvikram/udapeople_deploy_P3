@@ -135,27 +135,27 @@ jobs:
       - image: circleci/node
     steps:
       - checkout
-      - restore_cache:
-          keys: [frontend-build4]
+      #- restore_cache:
+      #    keys: [frontend-build4]
       - run:
           name: "Scan Frontend"
           command: |
             cd frontend
             ls -lrt
             echo "111111111111111111111111111111111111111"
-            sudo npm install -g npm@7.19.1
-            sudo npm fund
+            npm install -g npm@7.19.1
             ls -lrt
             echo "2222222222222222222222222222222222222222"
-            sudo npm audit fix
-            sudo npm fund
+            npm fund
+            npm audit fix
             ls -lrt
             echo "3333333333333333333333333333333333333333"
-            sudo npm audit fix --force
-            sudo npm fund
+            npm fund
+            npm audit fix --force
             ls -lrt
             echo "44444444444444444444444444444444444444"
-            sudo npm audit fix --audit-level=critical --force
+            npm fund
+            npm audit fix --audit-level=critical --force
 
   scan-backend:
     docker:
