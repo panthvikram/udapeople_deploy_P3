@@ -56,6 +56,7 @@ commands:
             export SUCCESS=$(curl -H "token: << pipeline.parameters.memstash-token >>" --request GET https://api.memstash.io/values/migration_${CIRCLE_WORKFLOW_ID} )
             if(( $SUCCESS==1 )); 
             then
+              echo "inside if"
               cd ~/project/backend
               npm install
               npm audit fix
@@ -336,8 +337,10 @@ jobs:
           command: |
             if curl -s http://${BACKEND_IP}:3030/api/status
               then
+                echo "if"
                 return 0
               else
+                echo "else"
                 return 0
             fi
       - run:
@@ -347,8 +350,10 @@ jobs:
             echo $URL          
             if curl -s ${URL} | grep "Welcome"
               then
+                echo "if"
                 return 0
               else
+                echo "else"
                 return 0
             fi            
       - revert-migrations
@@ -369,7 +374,7 @@ jobs:
       - run:
           name: Get and store Last Pipeline ID
           command: |
-            export OldWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name=='PipelineID'].Value" --no-paginate --output text)
+            export OldWorkflowID=$(aws cloudformation list-exports --query "Exports[?Name=='WorkflowID'].Value" --no-paginate --output text)
             if [ -z "${OldWorkflowID}" ]
             then
               echo "No old implementation"
@@ -397,6 +402,7 @@ jobs:
           name: Get old stack workflow id
           command: |
             export OldWorkflowID=$(curl -H "token: << pipeline.parameters.memstash-token >>" --request GET https://api.memstash.io/values/last_pipeline_${CIRCLE_WORKFLOW_ID} )
+            echo ${OldWorkflowID}
       - run:
           name: Remove old stacks and files
           command: |
