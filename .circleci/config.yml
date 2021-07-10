@@ -73,19 +73,20 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build-8]
+          keys: [frontend-build-9]
       - run:
           name: Build front-end
           command: |
             cd frontend
             sudo npm install
             sudo npm update
+            sudo npm install webpack-dev-server -g
             sudo npm fund
             sudo npm audit fix
             sudo npm run build
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build-8
+          key: frontend-build-9
 
   build-backend:
     docker:
@@ -93,7 +94,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build-8]
+          keys: [backend-build-9]
       - run:
           name: Back-end build
           command: |
@@ -104,7 +105,7 @@ jobs:
             sudo npm run build
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build-8
+          key: backend-build-9
 
   test-frontend:
     docker:
@@ -113,7 +114,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-            - "frontend-build-8"
+            - "frontend-build-9"
       - run:
           name: "Test frontend"
           command: |
@@ -128,7 +129,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build-8]
+          keys: [backend-build-9]
       - run:
           name: "Test Backend"
           command: |
@@ -141,11 +142,10 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build-8]
+          keys: [frontend-build-9]
       - run:
           name: "Scan Frontend"
           command: |
-            cd frontend
             npm audit fix --audit-level=critical --force
 
   scan-backend:
@@ -154,7 +154,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build-8]
+          keys: [backend-build-9]
       - run:
           name: "Scan Backend"
           command: |
