@@ -146,6 +146,7 @@ jobs:
       - run:
           name: "Scan Frontend"
           command: |
+            cd frontend
             npm audit fix --audit-level=critical --force
 
   scan-backend:
