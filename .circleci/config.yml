@@ -73,17 +73,18 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-build2]
+          keys: [frontend-build]
       - run:
           name: Build front-end
           command: |
             cd frontend
             sudo npm install
-            npm audit fix --force
+            sudo npm fund
+            sudo npm audit fix --force
             sudo npm run build
       - save_cache:
           paths: [frontend/node_modules]
-          key: frontend-build2
+          key: frontend-build
 
   build-backend:
     docker:
@@ -91,16 +92,18 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build2]
+          keys: [backend-build]
       - run:
           name: Back-end build
           command: |
             cd backend
             sudo npm install
+            sudo npm fund
+            sudo npm audit fix --force
             sudo npm run build
       - save_cache:
           paths: [backend/node_modules]
-          key: backend-build2
+          key: backend-build
 
   test-frontend:
     docker:
@@ -124,7 +127,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build2]
+          keys: [backend-build]
       - run:
           name: "Test Backend"
           command: |
@@ -138,7 +141,7 @@ jobs:
       - checkout
       - restore_cache:
           keys: 
-            - "frontend-build2"
+            - "frontend-build"
       - run:
           name: "Scan Frontend"
           command: |
@@ -151,7 +154,7 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-build2]
+          keys: [backend-build]
       - run:
           name: "Scan Backend"
           command: |
