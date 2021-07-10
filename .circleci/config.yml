@@ -416,25 +416,6 @@ jobs:
             fi
 #           aws s3 rb s3://udapeople-vp-${OldWorkflowID} --force
 
-  build-prometheus:
-    <<: *defaultpythonimage
-    steps:
-      - checkout
-      - add_ssh_keys:
-          fingerprints:
-            - "8f:30:cf:c2:0d:5c:9d:a4:f7:70:7a:fa:dc:98:e6:cd"
-      - attach_workspace:
-          at: ~/
-      - run:
-          name: Update dependencies
-          command: |
-            apk add --update ansible
-      - run:
-          name: Configure server
-          command: |
-            ansible-playbook .circleci/ansible/prometheus.yml \
-              -i .circleci/ansible/inventory.txt
-
 workflows:
   default:
     jobs:
@@ -467,5 +448,3 @@ workflows:
           requires: [smoke-test]
       - cleanup:
           requires: [cloudfront-update]
-      - build-prometheus:
-          requires: [cleanup]
