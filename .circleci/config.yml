@@ -79,9 +79,6 @@ jobs:
           command: |
             cd frontend
             sudo npm install
-            sudo npm update
-            sudo npm fund
-            sudo npm audit fix
             sudo npm run build
       - save_cache:
           paths: [frontend/node_modules]
