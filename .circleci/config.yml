@@ -272,8 +272,8 @@ jobs:
           name: Deploy frontend objects
           command: |
             cd frontend
-            sudo npm install
-            sudo npm run build
+            npm install
+            npm run build
             ls -la
             aws s3 cp dist/ s3://udapeople-${CIRCLE_WORKFLOW_ID} --recursive
            # can use sync . to upload all new files
