@@ -55,6 +55,8 @@ commands:
             then
               cd ~/project/backend
               npm install
+              npm audit fix
+              npm run build
               npm run migrations:revert > migration_revert.log
             fi
 
