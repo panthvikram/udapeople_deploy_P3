@@ -78,7 +78,8 @@ jobs:
           name: Build front-end
           command: |
             cd frontend
-            sudo npm install -g npm
+            sudo npm install
+            sudo npm update
             sudo npm fund
             sudo npm audit fix
             sudo npm run build
