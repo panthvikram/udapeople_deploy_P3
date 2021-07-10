@@ -81,10 +81,6 @@ jobs:
       - save_cache:
           paths: [frontend/node_modules]
           key: frontend-build
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - project/frontend/dist
 
   build-backend:
     docker:
@@ -258,8 +254,6 @@ jobs:
       - image: sleavely/node-awscli
     steps:
       - checkout
-      - attach_workspace:
-          at: ~/      
       - run:
           name: Install dependencies
           command: |
